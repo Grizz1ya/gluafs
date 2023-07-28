@@ -10,6 +10,10 @@ go get github.com/Grizz1ya/gluafs
 
 ## API
 
+### `fs.isDir(path)`
+
+Returns true if the file is a directory.
+
 ### `fs.exists(file)`
 
 Returns true if the file exists.
