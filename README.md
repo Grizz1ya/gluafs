@@ -5,7 +5,7 @@ filesystem utility for [gopher-lua](https://github.com/yuin/gopher-lua). This pr
 ## Installation
 
 ```
-go get github.com/kohkimakimoto/gluafs
+go get github.com/Grizz1ya/gluafs
 ```
 
 ## API

@@ -2,13 +2,23 @@ package gluafs
 
 import (
 	"fmt"
-	"github.com/yookoala/realpath"
-	"github.com/yuin/gopher-lua"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strconv"
+
+	"github.com/yookoala/realpath"
+	lua "github.com/yuin/gopher-lua"
 )
+
+// IsDirectory - check if path is directory
+func IsDirectory(source_path string) bool {
+	fileInfo, err := os.Stat(source_path)
+	if err != nil {
+		return false
+	}
+	return fileInfo.IsDir()
+}
 
 func Loader(L *lua.LState) int {
 	tb := L.NewTable()
@@ -27,8 +37,17 @@ func Loader(L *lua.LState) int {
 		"file":     file,
 		"dir":      dir,
 		"glob":     glob,
+		"isDir":    isDir,
 	})
 	L.Push(tb)
+
+	return 1
+}
+
+func isDir(L *lua.LState) int {
+	path := L.CheckString(1)
+
+	L.Push(lua.LBool(IsDirectory(path)))
 
 	return 1
 }
@@ -311,15 +330,6 @@ func glob(L *lua.LState) int {
 
 	L.Push(lua.LTrue)
 	return 1
-}
-
-func isDir(path string) (ret bool) {
-	fi, err := os.Stat(path)
-	if err != nil {
-		return false
-	}
-
-	return fi.IsDir()
 }
 
 func oct2decimal(oct int) (uint64, error) {
